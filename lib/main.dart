@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_task2/about.dart';
 import 'customer_card.dart';
 
 void main() => runApp(const MyApp());
@@ -22,9 +23,16 @@ class _MyAppState extends State<MyApp> {
 
   void genereteGardInfo() {
     for (int i = 0; i < 20; i++) {
-      _listOFGards.add(CardInfo(title: 'title $i', numberOfCard: i));
+      _listOFGards.add(CardInfo(title: 'title $i', id: i));
     }
   }
+
+  void updateCard (CardInfo newCardInfo){
+    setState(() {
+      _listOFGards[newCardInfo.id] = newCardInfo;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -38,7 +46,23 @@ class _MyAppState extends State<MyApp> {
           itemBuilder: (context, index){
             return Padding(
               padding: const EdgeInsets.all(8.0),
-              child: CustomCard(cardInfo: _listOFGards[index],),
+              child: CustomCard(cardInfo: _listOFGards[index],
+              onTap:() async {
+                final newCardInfo = await Navigator.push<CardInfo>(
+                  context,
+                  MaterialPageRoute(
+                  builder: (_) => AboutPage (
+                    cardInfo: _listOFGards[index],
+                    ),
+                  ),
+                );
+
+                if (newCardInfo != null) {
+                  print(newCardInfo.title);
+                  updateCard(newCardInfo);
+                }
+              },
+              ),
             );
           },
 
@@ -50,13 +74,13 @@ class _MyAppState extends State<MyApp> {
 
 
 class CardInfo {
-  final String title;
-  final int numberOfCard;
+  String title;
+  final int id;
   final String imageUrl;
 
   CardInfo({
     required this.title,
-    required this.numberOfCard,
+    required this.id,
     this.imageUrl = 'images/like.jpg',
   });
 }

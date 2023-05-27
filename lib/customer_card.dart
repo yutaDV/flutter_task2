@@ -4,8 +4,9 @@ import 'main.dart';
 
 class CustomCard extends StatelessWidget {
   final CardInfo cardInfo;
+  final VoidCallback onTap;
 
-  const CustomCard({Key? key, required this.cardInfo}) : super(key: key);
+  const CustomCard({Key? key, required this.cardInfo, required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,18 +33,11 @@ class CustomCard extends StatelessWidget {
                   children: [
                     Container(
                       padding: const EdgeInsets.only(bottom: 8),
-                      child: const Text(
-                        'Oeschinen Lake Campground',
+                      child:  Text(cardInfo.title,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
-                      ),
-                    ),
-                    Text(
-                      cardInfo.title,
-                      style: TextStyle(
-                        color: Colors.grey[500],
                       ),
                     ),
                   ],
@@ -141,12 +135,11 @@ class CustomCard extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  '#${cardInfo.numberOfCard}.',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    ),
+                  '#${cardInfo.id}.',
+                  style: Theme.of(context)
+                    .textTheme
+                    .titleLarge!
+                    .copyWith(color: Colors.white)
                   ),
                 ),
               ),
@@ -156,7 +149,7 @@ class CustomCard extends StatelessWidget {
       );
     }
 
-    return buildImageStack(cardInfo.numberOfCard);
+    return buildImageStack(cardInfo.id);
   }
 
 // Rest of the code for _buildButtonColumn method and other helper methods...
